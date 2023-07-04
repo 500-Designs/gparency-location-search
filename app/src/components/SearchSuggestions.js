@@ -7,7 +7,11 @@ const SearchSuggestions = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [location, setLocation] = useState({ lat: null, lng: null });
 
-  const API_KEY = 'AIzaSyCl-7pJgI-AXJmpjtYmrJvKtL7p6bP4_W0';
+  let wpUrl = window.location.origin;
+  if (wpUrl === "http://localhost:3000") {
+    wpUrl = "https://gparency.local/";
+  }
+
 
   useEffect(() => {
     if (location.lat !== null && location.lng !== null) {
@@ -26,7 +30,7 @@ const SearchSuggestions = () => {
   const fetchSuggestions = (value) => {
     // Make an API call to the Google Places API to get search suggestions
     fetch(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${value}&key=${API_KEY}`
+      `${wpUrl}/wp-json/gaprency/v1/proxy?endpoint=place/autocomplete/json&input=${value}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -40,7 +44,7 @@ const SearchSuggestions = () => {
   const handleSuggestionClick = (suggestion) => {
     setSearchValue(suggestion.description);
     fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${suggestion.place_id}&fields=geometry&key=${API_KEY}`
+      `${wpUrl}/wp-json/gaprency/v1/proxy?endpoint=place/details/json&place_id=${suggestion.place_id}&fields=geometry`
     )
       .then((response) => response.json())
       .then((data) => {

@@ -12,12 +12,6 @@ import SearchSuggestions from './components/SearchSuggestions';
 function App() {
   return (
     <div className="LocationSearchApp">
-      {/* <Autocomplete
-        apiKey={GOOGLE_PLACES_API_KEY}
-        onPlaceSelected={(place) => {
-          console.log(place);
-        }}
-      />; */}
       <SearchSuggestions />
     </div>
   );
