@@ -19,44 +19,25 @@ function gaprency_enqueue_assets() {
         return;
     }
 
-    // Path to asset manifest file
-    $manifest_path = GAPRENCY_PLUGIN_PATH . 'app/build/asset-manifest.json';
+    // Locate JS file
+    $dir_js = GAPRENCY_PLUGIN_PATH . 'app/build/static/js/';
+    $files_js = scandir($dir_js);
+    $app_js = preg_grep('/^main\..*\.js$/', $files_js);
+    $app_js = GAPRENCY_PLUGIN_URL . 'app/build/static/js/' . array_shift($app_js);
 
-    // Check if the manifest file exists
-    if (!file_exists($manifest_path)) {
-        return;
-    }
+    // Locate CSS file
+    $dir_css = GAPRENCY_PLUGIN_PATH . 'app/build/static/css/';
+    $files_css = scandir($dir_css);
+    $app_css = preg_grep('/^main\..*\.css$/', $files_css);
+    $app_css = GAPRENCY_PLUGIN_URL . 'app/build/static/css/' . array_shift($app_css);
 
-    // Read the manifest file
-    $manifest_json = file_get_contents($manifest_path);
-    $manifest = json_decode($manifest_json, true);
-
-    // Check if required keys are available
-    if (!isset($manifest['files']) || !isset($manifest['entrypoints'])) {
-        return;
-    }
-
-    $files = $manifest['files'];
-    $entrypoints = $manifest['entrypoints'];
-
-    foreach ($entrypoints as $entrypoint) {
-        $file = ltrim($entrypoint, '/');
-
-        if (!isset($files[$file])) {
-            continue;
-        }
-
-        $file_path = GAPRENCY_PLUGIN_URL . 'app/build/' . $file;
-        if (preg_match('/\.css$/', $file)) {
-            wp_enqueue_style('gaprency_' . md5($file), $file_path, [], null);
-        } elseif (preg_match('/\.js$/', $file)) {
-            wp_enqueue_script('gaprency_' . md5($file), $file_path, [], null, true);
-        }
-    }
+    // Enqueue JS and CSS
+    wp_enqueue_script('gaprency_app', $app_js, array(), '1.0.0', true);
+    wp_enqueue_style('gaprency_app', $app_css, array(), '1.0.0');
 }
 
 // Enqueue scripts and styles on the front end
-add_action( 'wp_enqueue_scripts', 'gaprency_enqueue_assets' );
+add_action('wp_enqueue_scripts', 'gaprency_enqueue_assets');
 
 function gaprency_render_app($atts) {
     // Return the HTML where the React app will hook into
@@ -64,7 +45,6 @@ function gaprency_render_app($atts) {
 }
 
 add_shortcode('gaprency_search_app', 'gaprency_render_app');
-
 
 // Google Maps API Proxy endpoint
 function gaprency_proxy_api_call(WP_REST_Request $request) {

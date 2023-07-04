@@ -11,7 +11,7 @@ import SearchSuggestions from './components/SearchSuggestions';
 
 function App() {
   return (
-    <div className="LocationSearchApp">
+    <div id="searchApp">
       <SearchSuggestions />
     </div>
   );

@@ -11,7 +11,7 @@ const SearchSuggestions = () => {
   if (wpUrl === "http://localhost:3000") {
     wpUrl = "https://gparency.local/";
   }
-
+  console.log("wpUrl: " + wpUrl);
 
   useEffect(() => {
     if (location.lat !== null && location.lng !== null) {
