@@ -1,0 +1,63 @@
+.appSearchContainer {
+  position: relative;
+  font-size: 16px;
+  max-width: 540px;
+  margin: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.appSearchContainer * {
+  box-sizing: border-box;
+}
+
+.appSearchField {
+  border: 1px solid #acacac;
+  border-radius: 4px;
+  padding: 13px;
+  width: 100%;
+  outline: none;
+}
+
+.appSearchField:placeholder {
+  color: #acacac;
+}
+
+.appSearchField:active,
+.appSearchField:hover {
+  outline: none;
+}
+
+.appSearchButton {
+  border: none;
+  background: #22e2b5;
+  border-radius: 4px;
+  width: 45px;
+  height: 45px;
+}
+
+.appSuggesstions {
+  position: absolute;
+  top: 50px;
+  width: calc(100% - 50px);
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  list-style-type: none;
+  margin: 0;
+  transition: opacity 0.3s ease;
+  background-color: #fff;
+}
+
+.appSuggestion {
+  padding: 7px 7px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: block;
+}
+
+.appSuggestion:hover {
+  background-color: #f0f0f0;
+}
