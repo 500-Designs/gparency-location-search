@@ -43,10 +43,19 @@
   outline: none;
 }
 
-#searchApp .appSearchButton:hover {
+#searchApp .appSearchButton:disabled:hover {
+  background: #22e2b5;
+  border-color: #22e2b5;
+  cursor: not-allowed;
+}
+
+#searchApp .appSearchButton:not([disabled]):hover {
   background: #22e2b5;
   border-color: #19af91;
+  cursor: pointer;
 }
+
+
 
 #searchApp .appSuggesstions {
   position: absolute;

@@ -9,13 +9,13 @@ const SearchSuggestions = () => {
 
   let wpUrl = window.location.origin;
   if (wpUrl === "http://localhost:3000") {
-    wpUrl = "https://gparency.local/";
+    wpUrl = "https://gparency.local";
   }
-  console.log("wpUrl: " + wpUrl);
 
   useEffect(() => {
     if (location.lat !== null && location.lng !== null) {
       console.log('Selected location:', location);
+      
     }
   }, [location]);
 
@@ -70,7 +70,7 @@ const SearchSuggestions = () => {
   return (
     <div className="appSearchContainer">
       <input type="text" className='appSearchField' value={searchValue} onChange={handleChange} placeholder='Search by Address, City, State, Zip or County' />
-      <button onClick={handleSearchSubmit} className="appSearchButton" >
+      <button onClick={handleSearchSubmit} className="appSearchButton" disabled={(location.lat && location.lng ) ? false : true } >
         <SearchButtonIcon />
       </button>
 
