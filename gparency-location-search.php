@@ -14,6 +14,11 @@ define('GAPRENCY_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('GAPRENCY_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 function gaprency_enqueue_assets() {
+    // Check if it's the front page
+    if (!is_front_page()) {
+        return;
+    }
+
     // Path to asset manifest file
     $manifest_path = GAPRENCY_PLUGIN_PATH . 'app/build/asset-manifest.json';
 
@@ -50,12 +55,10 @@ function gaprency_enqueue_assets() {
     }
 }
 
-function gaprency_render_app($atts) {
-    // // Enqueue necessary assets
-    // gaprency_enqueue_assets();
-    // Call gaprency_enqueue_assets on the wp_enqueue_scripts action
-    add_action('wp_enqueue_scripts', 'gaprency_enqueue_assets');
+// Enqueue scripts and styles on the front end
+add_action( 'wp_enqueue_scripts', 'gaprency_enqueue_assets' );
 
+function gaprency_render_app($atts) {
     // Return the HTML where the React app will hook into
     return '<div id="root"></div>';
 }
