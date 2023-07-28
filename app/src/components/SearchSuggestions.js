@@ -2,15 +2,22 @@ import React, { useState, useEffect } from 'react';
 import './SearchSuggestions.css'; // Import the CSS file
 import SearchButtonIcon from './SearchButtonIcon';
 
+
 const SearchSuggestions = () => {
   const [searchValue, setSearchValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [location, setLocation] = useState({ lat: null, lng: null });
 
+  let marketplaceAppUrl =  'https://marketplace.dev.gparency.com?zoomLevel=17';
   let wpUrl = window.location.origin;
   if (wpUrl === "http://localhost:3000") {
     wpUrl = "https://gparency.local";
   }
+  if (wpUrl === "https://gparency.com/") {
+    marketplaceAppUrl = 'https://marketplace.gparency.com?zoomLevel=17';
+  }
+
+
 
   useEffect(() => {
     if (location.lat !== null && location.lng !== null) {
@@ -62,7 +69,7 @@ const SearchSuggestions = () => {
 
   const handleSearchSubmit = () => {
     if (location.lat !== null && location.lng !== null) {
-      const url = `https://auth.marketplace.gparency.com/?lat=${location.lat}&lng=${location.lng}`;
+      const url = `${marketplaceAppUrl}&lat=${location.lat}&lng=${location.lng}`;
       window.open(url, '_blank');
     }
   };

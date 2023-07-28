@@ -34,6 +34,9 @@ function gaprency_enqueue_assets() {
     // Enqueue JS and CSS
     wp_enqueue_script('gaprency_app', $app_js, array(), '1.0.0', true);
     wp_enqueue_style('gaprency_app', $app_css, array(), '1.0.0');
+    wp_localize_script('wp-env-script', 'wpEnv', array(
+        'environment' => defined('WP_ENVIRONMENT_TYPE') ? WP_ENVIRONMENT_TYPE : 'unknown',
+    ));
 }
 
 // Enqueue scripts and styles on the front end
@@ -60,6 +63,9 @@ function gaprency_proxy_api_call(WP_REST_Request $request) {
 
     // Append the API key to the parameters
     $parameters['key'] = $google_api_key;
+
+    // Restrict the search to the United States
+    $parameters['components'] = 'country:US';
 
     // Build the API URL
     $url = 'https://maps.googleapis.com/maps/api/' . $endpoint . '?' . http_build_query($parameters);
