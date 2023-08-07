@@ -2,40 +2,34 @@ import React, { useState, useEffect } from 'react';
 import './SearchSuggestions.css'; // Import the CSS file
 import SearchButtonIcon from './SearchButtonIcon';
 
-
 const SearchSuggestions = () => {
   const [searchValue, setSearchValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [location, setLocation] = useState({ lat: null, lng: null });
+  const [location, setLocation] = useState({ lat: null, lng: null, street: '', state: '', country: '', zip: '', city: '' });
 
-  let marketplaceAppUrl =  'https://marketplace.dev.gparency.com?zoomLevel=17';
+  let marketplaceAppUrl = 'https://marketplace.gparency.com?zoomLevel=17';
   let wpUrl = window.location.origin;
   if (wpUrl === "http://localhost:3000") {
     wpUrl = "https://gparency.local";
   }
-  if (wpUrl === "https://gparency.com/") {
+  if (wpUrl === "https://gparencydev.wpengine.com/") {
     marketplaceAppUrl = 'https://marketplace.gparency.com?zoomLevel=17';
   }
-
-
 
   useEffect(() => {
     if (location.lat !== null && location.lng !== null) {
       console.log('Selected location:', location);
-      
+      handleSearchSubmit();
     }
   }, [location]);
 
   const handleChange = (event) => {
     const { value } = event.target;
     setSearchValue(value);
-
-    // Call the Google Places API to fetch search suggestions
     fetchSuggestions(value);
   };
 
   const fetchSuggestions = (value) => {
-    // Make an API call to the Google Places API to get search suggestions
     fetch(
       `${wpUrl}/wp-json/gaprency/v1/proxy?endpoint=place/autocomplete/json&input=${value}`
     )
@@ -51,17 +45,22 @@ const SearchSuggestions = () => {
   const handleSuggestionClick = (suggestion) => {
     setSearchValue(suggestion.description);
     fetch(
-      `${wpUrl}/wp-json/gaprency/v1/proxy?endpoint=place/details/json&place_id=${suggestion.place_id}&fields=geometry`
+      `${wpUrl}/wp-json/gaprency/v1/proxy?endpoint=place/details/json&place_id=${suggestion.place_id}&fields=address_component,geometry`
     )
       .then((response) => response.json())
       .then((data) => {
         const latitude = data.result.geometry.location.lat;
         const longitude = data.result.geometry.location.lng;
 
-        // Store lat and long in state
-        setLocation({ lat: latitude, lng: longitude });
+        const addressComponents = data.result.address_components;
+        const street = encodeURIComponent(addressComponents.find((component) => component.types.includes('route'))?.long_name || '');
+        const city = encodeURIComponent(addressComponents.find((component) => component.types.includes('locality'))?.long_name || '');
+        const state = encodeURIComponent(addressComponents.find((component) => component.types.includes('administrative_area_level_1'))?.short_name || '');
+        const country = encodeURIComponent(addressComponents.find((component) => component.types.includes('country'))?.long_name || '');
+        const zip = encodeURIComponent(addressComponents.find((component) => component.types.includes('postal_code'))?.long_name || '');
 
-        // Clear the suggestions
+        setLocation({ lat: latitude, lng: longitude, street, state, country, zip, city });
+
         setSuggestions([]);
       })
       .catch((error) => console.log(error));
@@ -69,7 +68,8 @@ const SearchSuggestions = () => {
 
   const handleSearchSubmit = () => {
     if (location.lat !== null && location.lng !== null) {
-      const url = `${marketplaceAppUrl}&lat=${location.lat}&lng=${location.lng}`;
+      const { lat, lng, street, state, country, zip, city } = location;
+      const url = `${marketplaceAppUrl}&lat=${lat}&lng=${lng}&street=${street}&state=${state}&country=${country}&zip=${zip}&city=${city}`;
       window.open(url, '_blank');
     }
   };
