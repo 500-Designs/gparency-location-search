@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Gaprency Location Search
- * Version: 1.0.0
+ * Version: 1.5.0
  * Description: Injects Location Search with Autosuggestions from Google Maps API, then loads Gparency Marketplace App based on selected location 
  * Author: James500Dev
  * Author URI:  https://500designs.com
@@ -52,7 +52,8 @@ add_shortcode('gaprency_search_app', 'gaprency_render_app');
 // Google Maps API Proxy endpoint
 function gaprency_proxy_api_call(WP_REST_Request $request) {
     // Your Google API key
-    $google_api_key = 'AIzaSyCl-7pJgI-AXJmpjtYmrJvKtL7p6bP4_W0';
+    // $google_api_key = 'AIzaSyCl-7pJgI-AXJmpjtYmrJvKtL7p6bP4_W0';
+    $google_api_key = 'AIzaSyCTOFMGUs30v-cHkBMip0lq1dCTMAJsG6Y';
 
     // Fetch parameters from the request
     $endpoint = $request->get_param('endpoint');
