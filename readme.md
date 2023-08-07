@@ -15,3 +15,10 @@ version: 1.5
 - preview: ![widget preview](https://github.com/jamesdev500/gparency-location-search/blob/main/preview.png)
 
 - google api key is used in the plugin php file, and must be updated to paid account, and set necessary site environment urls as restrictions to the google cloud account
+
+- How to install React App
+  - `cd app`
+  - `npm install`
+  - `npm run build`
+
+- If react app is updated, build it and make sure to upload 'build' folder to where the plugin is running
