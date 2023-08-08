@@ -2,7 +2,7 @@
 
 # gparency-location-search-app 
 
-version: 1.5
+version: 1.8
   
 
 - A Wordpress plugin that renders a location search app on home page when shortcode "[gaprency_search_app]" is added

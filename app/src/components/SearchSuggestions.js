@@ -6,7 +6,7 @@ import SearchButtonIcon from './SearchButtonIcon';
 const SearchSuggestions = () => {
   const [searchValue, setSearchValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [location, setLocation] = useState({ lat: null, lng: null });
+  const [location, setLocation] = useState({ lat: null, lng: null, placeId: null });
 
   let marketplaceAppUrl =  'https://marketplace.dev.gparency.com?zoomLevel=17';
   let wpUrl = window.location.origin;
@@ -20,9 +20,9 @@ const SearchSuggestions = () => {
 
 
   useEffect(() => {
-    if (location.lat !== null && location.lng !== null) {
-      console.log('Selected location:', location);
-      
+    if (location.lat !== null && location.lng !== null && location.placeId !== null) {
+      console.debug(`Selected location:`, location);
+      handleSearchSubmit();
     }
   }, [location]);
 
@@ -59,7 +59,7 @@ const SearchSuggestions = () => {
         const longitude = data.result.geometry.location.lng;
 
         // Store lat and long in state
-        setLocation({ lat: latitude, lng: longitude });
+        setLocation({ lat: latitude, lng: longitude, placeId: suggestion.place_id });
 
         // Clear the suggestions
         setSuggestions([]);
@@ -69,7 +69,8 @@ const SearchSuggestions = () => {
 
   const handleSearchSubmit = () => {
     if (location.lat !== null && location.lng !== null) {
-      const url = `${marketplaceAppUrl}&lat=${location.lat}&lng=${location.lng}`;
+      // const url = `${marketplaceAppUrl}&lat=${location.lat}&lng=${location.lng}`;
+      const url = `${marketplaceAppUrl}&placeId=${location.placeId}`;
       window.open(url, '_blank');
     }
   };
