@@ -52,8 +52,7 @@ add_shortcode('gaprency_search_app', 'gaprency_render_app');
 // Google Maps API Proxy endpoint
 function gaprency_proxy_api_call(WP_REST_Request $request) {
     // Your Google API key
-    // $google_api_key = 'AIzaSyCl-7pJgI-AXJmpjtYmrJvKtL7p6bP4_W0';
-    $google_api_key = 'AIzaSyCTOFMGUs30v-cHkBMip0lq1dCTMAJsG6Y';
+    $google_api_key = 'ADD_KEY_HERE';
 
     // Fetch parameters from the request
     $endpoint = $request->get_param('endpoint');
